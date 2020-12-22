@@ -1,0 +1,20 @@
+name: crystal2nix
+version: 0.1.0
+
+authors:
+  - Michael Fellinger
+  - Peter Hoeg <peter@hoeg.com>
+
+targets:
+  crystal2nix:
+    main: src/crystal2nix.cr
+
+crystal: 0.35.1
+
+dependencies:
+  json_mapping:
+    github: crystal-lang/json_mapping.cr
+  yaml_mapping:
+    github: crystal-lang/yaml_mapping.cr
+
+license: MIT
