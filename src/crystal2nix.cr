@@ -77,7 +77,11 @@ module Crystal2Nix
             exit 1
           end
           rev = if value["version"]?
-                  "v#{value["version"]}"
+                  if value["version"] =~ /^(?<version>.+)\+git\.commit\.(?<rev>.+)$/
+                    $~["rev"]
+                  else
+                    "v#{value["version"]}"
+                  end
                 else
                   value["commit"]
                 end
