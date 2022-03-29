@@ -1,5 +1,5 @@
 name: crystal2nix
-version: 0.1.1
+version: 0.2.0
 
 authors:
   - Michael Fellinger
@@ -7,11 +7,13 @@ authors:
 
 targets:
   crystal2nix:
-    main: src/crystal2nix.cr
+    main: src/runner.cr
 
-crystal: 0.35.1
+crystal: 1.0.0
 
 dependencies:
+  version_from_shard:
+    github: hugopl/version_from_shard
   json_mapping:
     github: crystal-lang/json_mapping.cr
   yaml_mapping:
