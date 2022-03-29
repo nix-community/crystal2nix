@@ -1,0 +1,9 @@
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+    authors: []
+  categories:
+    - title: Changes
+      labels:
+        - "*"
