@@ -1,6 +1,13 @@
-### UNRELEASED
+### v0.3.0 2022-04-09
 
+Major change(s):
+
+Create a new shards.nix format that can be used by the nixpkgs `fetchgit`
+fetcher instead of `fetchFromGitHub` to allow fetching from all git sources.
+
+Minor change(s):
 - Build using nix and provide flake.nix for an easy development experience.
+- Add some basic tests
 
 ### v0.2.0 2022-03-29
 

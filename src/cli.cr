@@ -1,16 +1,14 @@
 module Crystal2Nix
-  SHARD_LOCK = "shard.lock"
-
   class Cli
     def initialize
-      @lock_file = SHARD_LOCK
+      @lock_file = "shard.lock"
 
       OptionParser.parse do |parser|
         parser.banner = "Usage: crystal2nix [arguments]"
         parser.on("-l NAME", "--lock-file=NAME", "Lock file name") do |name|
           @lock_file = name
         end
-        parser.on("-h", "--help", "Show this help") do
+        parser.on("-h", "--help", "Show help") do
           puts parser
           exit
         end
