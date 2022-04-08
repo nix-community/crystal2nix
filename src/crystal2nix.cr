@@ -1,7 +1,7 @@
-require "json_mapping"
+require "json"
+require "yaml"
 require "option_parser"
 require "uri"
-require "yaml_mapping"
 require "version_from_shard"
 
 require "./data"

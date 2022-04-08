@@ -1,12 +1,21 @@
 module Crystal2Nix
   class PrefetchJSON
-    JSON.mapping(sha256: String)
+    include JSON::Serializable
+
+    property sha256 : String
   end
 
   class ShardLock
-    YAML.mapping(
-      version: Float32,
-      shards: Hash(String, Hash(String, String))
-    )
+    include YAML::Serializable
+
+    property version : Float32
+    property shards : Hash(String, Shard)
+  end
+
+  class Shard
+    include YAML::Serializable
+
+    property git : String
+    property version : String
   end
 end

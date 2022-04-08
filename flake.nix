@@ -16,7 +16,7 @@
         packages = flake-utils.lib.flattenTree rec {
           crystal2nix = pkgs.crystal.buildCrystalPackage {
             pname = "crystal2nix";
-            version = "0.2.0";
+            version = "0.3.0";
 
             src = ./.;
 
@@ -37,8 +37,11 @@
         };
 
         devShell = pkgs.mkShell {
-          nativeBuildInputs = with pkgs; [
+          buildInputs = with pkgs; [
             openssl
+          ];
+
+          nativeBuildInputs = with pkgs; [
             pkgconfig
             crystal
             shards
