@@ -1,3 +1,6 @@
+### v0.4.0 
+(IN PROGRESS)
+
 ### v0.3.0 2022-04-09
 
 Major change(s):
