@@ -28,24 +28,26 @@
 
             nativeBuildInputs = with pkgs; [ pkg-config ];
           };
+
+          default = crystal2nix;
         };
 
-        defaultPackage = packages.crystal2nix;
-
-        checks = flake-utils.lib.flattenTree rec {
+        checks = flake-utils.lib.flattenTree {
           specs = packages.crystal2nix;
         };
 
-        devShell = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            openssl
-          ];
+        devShells = flake-utils.lib.flattenTree {
+          default = pkgs.mkShell {
+            buildInputs = with pkgs; [
+              openssl
+            ];
 
-          nativeBuildInputs = with pkgs; [
-            pkgconfig
-            crystal
-            shards
-          ];
+            nativeBuildInputs = with pkgs; [
+              pkg-config
+              crystal
+              shards
+            ];
+          };
         };
       });
 }
