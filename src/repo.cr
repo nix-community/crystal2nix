@@ -1,19 +1,13 @@
 module Crystal2Nix
   class Repo
-    @url : URI
-    getter rev : String
+    property url : String
+    property rev : String?
+    property type : Symbol
 
-    def initialize(entry : Shard)
-      @url = URI.parse(entry.git).normalize
-      @rev = if entry.version =~ /^(?<version>.+)\+git\.commit\.(?<rev>.+)$/
-               $~["rev"]
-             else
-               "v#{entry.version}"
-             end
-    end
-
-    def url : String
-      @url.to_s
+    def initialize(url : String, rev : String? = nil, type : Symbol = :git)
+      @url = url
+      @rev = rev
+      @type = type
     end
   end
 end
