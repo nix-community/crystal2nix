@@ -1,5 +1,33 @@
+require "json"
+require "yaml"
+
 module Crystal2Nix
   SHARDS_NIX = "shards.nix"
+
+  class PrefetchJSON
+    JSON.mapping({
+      sha256: String
+    })
+  end
+
+  class Repo
+    getter url, rev
+
+    def initialize(shard_info)
+      @url = shard_info["github"]? || shard_info["gitlab"]? || shard_info["url"]?
+      @rev = shard_info["version"]? || "master"
+    end
+  end
+
+  class ShardLock
+    JSON.mapping({
+      shards: Hash(String, Hash(String, String))
+    })
+
+    def self.from_yaml(yaml_str : String)
+      from_json YAML.parse(yaml_str).to_json
+    end
+  end
 
   class Worker
     def initialize(@lock_file : String)
@@ -14,35 +42,36 @@ module Crystal2Nix
             STDERR.puts "Unable to parse repository entry"
             exit 1
           end
+
           sha256 = ""
-          case 
+
+          case
           when repo.url.ends_with?(".git")
-          
-          args = [
-            "--no-deepClone",
-            "--url", repo.url,
-            "--rev", repo.rev,
-          ]
-          Process.run("nix-prefetch-git", args: args) do |x|
-            x.error.each_line { |e| puts e }
-            sha256 = PrefetchJSON.from_json(x.output).sha256
+            args = [
+              "--no-deepClone",
+              "--url", repo.url,
+              "--rev", repo.rev,
+            ]
+            Process.run("nix-prefetch-git", args: args) do |x|
+              x.error.each_line { |e| STDERR.puts e }
+              sha256 = PrefetchJSON.from_json(x.output).sha256
+            end
+          when repo.url.starts_with?("hg://") || repo.url.ends_with?(".hg")
+            args = [
+              "--url", repo.url,
+              "--rev", repo.rev,
+            ]
+            Process.run("nix-prefetch-hg", args: args) do |x|
+              x.error.each_line { |e| STDERR.puts e }
+              sha256 = PrefetchJSON.from_json(x.output).sha256
+            end
+          when repo.url.ends_with?(".fossil")
+            STDERR.puts "Fossil repositories are not supported."
+            next
+          else
+            STDERR.puts "Unknown repository type for #{repo.url}"
+            next
           end
-        when repo.url.starts_with?("hg://") || repo.url.ends_with?(".hg")
-          args = [
-            "--url", repo.url,
-            "--rev", repo.rev,
-          ]
-          Process.run("nix-prefetch-hg", args: args) do |x|
-            x.error.each_line { |e| puts e }
-            sha256 = PrefetchJSON.from_json(x.output).sha256
-          end
-        when repo.url.ends_with?(".fossil")
-          STDERR.puts "Fossil repositories are not supported."
-          next
-        else
-          STDERR.puts "Unknown repository type for #{repo.url}"
-          next
-        end
 
           file.puts %(  #{key} = {)
           file.puts %(    url = "#{repo.url}";)
