@@ -1,6 +1,6 @@
 require "./spec_helper"
 
-Spectator.describe Crystal2Nix::Repo do
+Spectator.describe Repo do
   context "commit" do
     let(:with_commit) {
       <<-EOF
@@ -9,12 +9,8 @@ Spectator.describe Crystal2Nix::Repo do
       EOF
     }
 
-    let(:shard) {
-      Crystal2Nix::Shard.from_yaml(with_commit)
-    }
-
     let(:repo) {
-      Crystal2Nix::Repo.new(shard.url, shard.rev, shard.type)
+      Crystal2Nix::Repo.new(Crystal2Nix::Shard.from_yaml(with_commit))
     }
 
     it "should have the commit as revision" do
@@ -30,56 +26,12 @@ Spectator.describe Crystal2Nix::Repo do
       EOF
     }
 
-    let(:shard) {
-      Crystal2Nix::Shard.from_yaml(with_version)
-    }
-
     let(:repo) {
-      Crystal2Nix::Repo.new(shard.url, shard.rev, shard.type)
+      Crystal2Nix::Repo.new(Crystal2Nix::Shard.from_yaml(with_version))
     }
 
     it "should prefix version references with a v" do
       expect(repo.rev).to eq("v0.1.1")
-    end
-  end
-
-  context "http url" do
-    let(:with_http_url) {
-      <<-EOF
-      http: https://example.com/archive.tar.gz
-      EOF
-    }
-
-    let(:shard) {
-      Crystal2Nix::Shard.from_yaml(with_http_url)
-    }
-
-    let(:repo) {
-      Crystal2Nix::Repo.new(shard.url, shard.rev, shard.type)
-    }
-
-    it "should have the correct url" do
-      expect(repo.url).to eq("https://example.com/archive.tar.gz")
-    end
-  end
-
-  context "git without revision" do
-    let(:without_revision) {
-      <<-EOF
-      git: https://github.com/example/repo.git
-      EOF
-    }
-
-    let(:shard) {
-      Crystal2Nix::Shard.from_yaml(without_revision)
-    }
-
-    let(:repo) {
-      Crystal2Nix::Repo.new(shard.url, shard.rev, shard.type)
-    }
-
-    it "should have the correct url" do
-      expect(repo.url).to eq("https://github.com/example/repo.git")
     end
   end
 end
