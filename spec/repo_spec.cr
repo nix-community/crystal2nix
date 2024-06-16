@@ -1,5 +1,5 @@
-require "spec"  # Import the spec module from the Crystal standard library
-require "../src/crystal2nix"  # Adjust the path according to your project structure
+require "spec"  
+require "../src/crystal2nix"  
 
 describe Crystal2Nix::Repo do
   it "creates a new repo with a URL and default values" do
