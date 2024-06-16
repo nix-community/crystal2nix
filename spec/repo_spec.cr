@@ -1,37 +1,32 @@
-require "./spec_helper"
+require "spec"  # Import the spec module from the Crystal standard library
+require "../src/crystal2nix"  # Adjust the path according to your project structure
 
-Spectator.describe Repo do
-  context "commit" do
-    let(:with_commit) {
-      <<-EOF
-      git: https://github.com/cadmiumcr/transliterator.git
-      version: 0.1.0+git.commit.46c4c14594057dbcfaf27e7e7c8c164d3f0ce3f1
-      EOF
-    }
-
-    let(:repo) {
-      Crystal2Nix::Repo.new(Crystal2Nix::Shard.from_yaml(with_commit))
-    }
-
-    it "should have the commit as revision" do
-      expect(repo.rev).to eq("46c4c14594057dbcfaf27e7e7c8c164d3f0ce3f1")
-    end
+describe Crystal2Nix::Repo do
+  it "creates a new repo with a URL and default values" do
+    repo = Crystal2Nix::Repo.new("https://example.com/repo.git")
+    repo.url.should eq("https://example.com/repo.git")
+    repo.rev.should be_nil
+    repo.type.should eq(:git)
   end
 
-  context "explicit version" do
-    let(:with_version) {
-      <<-EOF
-      git: https://github.com/crystal-lang/json_mapping.cr.git
-      version: 0.1.1
-      EOF
-    }
+  it "creates a new repo with a URL, rev, and type" do
+    repo = Crystal2Nix::Repo.new("https://example.com/repo.git", "master", :git)
+    repo.url.should eq("https://example.com/repo.git")
+    repo.rev.should eq("master")
+    repo.type.should eq(:git)
+  end
 
-    let(:repo) {
-      Crystal2Nix::Repo.new(Crystal2Nix::Shard.from_yaml(with_version))
-    }
+  it "creates a new repo with a URL and rev only" do
+    repo = Crystal2Nix::Repo.new("https://example.com/repo.git", "develop")
+    repo.url.should eq("https://example.com/repo.git")
+    repo.rev.should eq("develop")
+    repo.type.should eq(:git)  # Default type is :git
+  end
 
-    it "should prefix version references with a v" do
-      expect(repo.rev).to eq("v0.1.1")
-    end
+  it "creates a new repo with a URL and type only" do
+    repo = Crystal2Nix::Repo.new("https://example.com/repo.git", nil, :svn)
+    repo.url.should eq("https://example.com/repo.git")
+    repo.rev.should be_nil
+    repo.type.should eq(:svn)
   end
 end
