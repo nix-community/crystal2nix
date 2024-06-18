@@ -8,8 +8,8 @@ module Crystal2Nix
     def run
       File.open SHARDS_NIX, "w+" do |file|
         file.puts %({)
-        ShardLock.from_yaml(File.read(@lock_file)).shards.each do |key, value|
-          repo = Repo.new value
+        ShardLock.from_yaml(File.read(@lock_file)).shards.each do |key, shard|
+          repo = Repo.new(shard.url, shard.rev)
           if repo.nil?
             STDERR.puts "Unable to parse repository entry"
             exit 1
