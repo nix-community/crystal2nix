@@ -1,4 +1,4 @@
-require "./data" 
+require "./data"
 
 module Crystal2Nix
   class Worker

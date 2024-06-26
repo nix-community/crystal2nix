@@ -1,0 +1,5 @@
+version: 1.0
+shards:
+  example_shard:
+    git: https://github.com/example/example.git
+    version: v1.0.0

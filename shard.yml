@@ -1,7 +1,6 @@
-name: crystal2nix
-version: 0.3.0
+name: crystal2nix_myproject
+version: 0.1.0
 license: MIT
-repository: https://github.com/nix-community/crystal2nix
 authors:
   - Michael Fellinger
   - Peter Hoeg <peter@hoeg.com>
@@ -18,7 +17,6 @@ dependencies:
     version: ~> 1.2.4
 
 development_dependencies:
-
   spectator:
     gitlab: arctic-fox/spectator
     version: ~> 0.10.5
