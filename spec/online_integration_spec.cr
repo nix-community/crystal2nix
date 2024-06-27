@@ -1,17 +1,7 @@
-# spec/online_integration_spec.cr
-
 require "./spec_helper"
 require "../src/crystal2nix"
 
-Spectator.describe Crystal2Nix::Worker do
-  describe "#initialize" do
-    it "raises an error if lock file does not exist" do
-      expect {
-        Crystal2Nix::Worker.new("nonexistent_lock_file.lock")
-      }.to raise_error(Exception)
-    end
-  end
-
+Spectator.describe Crystal2Nix::Worker, "online" do
   describe "#run" do
     it "creates shards.nix file" do
       lock_file = "test_lock_file.lock"

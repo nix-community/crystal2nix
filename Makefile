@@ -1,25 +1,28 @@
-# Makefile for Crystal2Nix project
+# Define variables
+CRYSTAL=crystal
+SPEC=crystal spec
 
-# Variables
-CRYSTAL_BIN = crystal
-SPEC = spec
-SPEC_FILES = $(wildcard $(SPEC)/*.cr)
-SHARD_LOCK = test_lock_file.lock
-EMPTY_LOCK = empty_lock_file.lock
-SHARDS_NIX = src/crystal2nix/shards.nix
-
-# Targets
-.PHONY: test offline-test online-test clean
-
+# Default target
+.PHONY: test
 test: offline-test online-test
 
-offline-test: $(SPEC_FILES) $(SHARD_LOCK) $(EMPTY_LOCK)
-	$(CRYSTAL_BIN) spec --offline
+# Offline tests
+.PHONY: offline-test
+offline-test:
+	@echo "Running offline tests..."
+	# Here we can set an environment variable to simulate offline mode
+	NO_NETWORK=true $(SPEC)
 
-online-test: $(SPEC_FILES) $(SHARD_LOCK)
-	$(CRYSTAL_BIN) spec
+# Online tests
+.PHONY: online-test
+online-test:
+	@echo "Running online tests..."
+	$(SPEC)
 
+# Clean target (if necessary)
+.PHONY: clean
 clean:
-	rm -f $(SHARD_LOCK)
-	rm -f $(EMPTY_LOCK)
-	rm -f $(SHARDS_NIX)
+	@echo "Cleaning up..."
+	# Add any clean up commands here
+
+# You can add more targets as needed

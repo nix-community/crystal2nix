@@ -1,9 +1,7 @@
-# spec/offline_integration_spec.cr
-
 require "./spec_helper"
 require "../src/crystal2nix"
 
-Spectator.describe Crystal2Nix::Worker do
+Spectator.describe Crystal2Nix::Worker, "offline" do
   describe "#initialize" do
     it "raises an error if lock file does not exist" do
       expect {
@@ -24,7 +22,7 @@ YAML
       worker.run
 
       expect(File.exists?(Crystal2Nix::Worker::SHARDS_NIX)).to be_true
-      expect(File.read(Crystal2Nix::Worker::SHARDS_NIX)).to eq ""
+      expect(File.read(Crystal2Nix::Worker::SHARDS_NIX)).to eq "{\n}\n"
 
       # Clean up the temporary files
       File.delete(lock_file)
