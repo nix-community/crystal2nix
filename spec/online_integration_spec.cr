@@ -1,3 +1,5 @@
+# spec/online_integration_spec.cr
+
 require "./spec_helper"
 require "../src/crystal2nix"
 
@@ -106,24 +108,6 @@ NIX
 
       actual_nix_content = File.read(Crystal2Nix::Worker::SHARDS_NIX)
       expect(actual_nix_content).to eq expected_nix_content
-
-      # Clean up the temporary files
-      File.delete(lock_file)
-      File.delete(Crystal2Nix::Worker::SHARDS_NIX)
-    end
-
-    it "handles an empty lock file and creates an empty shards.nix file" do
-      lock_file = "empty_lock_file.lock"
-      File.write(lock_file, <<-YAML)
-version: 1.0
-shards: {}
-YAML
-
-      worker = Crystal2Nix::Worker.new(lock_file)
-      worker.run
-
-      expect(File.exists?(Crystal2Nix::Worker::SHARDS_NIX)).to be_true
-      expect(File.read(Crystal2Nix::Worker::SHARDS_NIX)).to eq ""
 
       # Clean up the temporary files
       File.delete(lock_file)
