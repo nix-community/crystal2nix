@@ -1,28 +1,32 @@
 # Define variables
 CRYSTAL=crystal
-SPEC=crystal spec
+SPEC=$(CRYSTAL) spec
+
+default: check
+
+.PHONY: build
+build: @shards build
 
 # Default target
-.PHONY: test
-test: offline-test online-test
+.PHONY: check
+check: offline-check online-check
 
 # Offline tests
-.PHONY: offline-test
-offline-test:
+.PHONY: offline-check
+offline-check:
 	@echo "Running offline tests..."
-	# Here we can set an environment variable to simulate offline mode
 	NO_NETWORK=true $(SPEC)
 
 # Online tests
-.PHONY: online-test
-online-test:
+.PHONY: online-check
+online-check:
 	@echo "Running online tests..."
 	$(SPEC)
 
-# Clean target (if necessary)
+# Clean target
 .PHONY: clean
 clean:
 	@echo "Cleaning up..."
-	# Add any clean up commands here
+	rm -f shard.lock shards.nix
 
 # You can add more targets as needed
