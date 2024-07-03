@@ -21,4 +21,4 @@ dependencies:
 development_dependencies:
   spectator:
     gitlab: arctic-fox/spectator
-    version: ~> 0.10.6
+    version: ~> 0.10.5

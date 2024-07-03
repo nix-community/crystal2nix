@@ -17,10 +17,5 @@ module Crystal2Nix
 
     property git : String
     property version : String
-
-    def initialize(git : String, version : String)
-      @git = git
-      @version = version
-    end
   end
 end
