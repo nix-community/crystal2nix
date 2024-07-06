@@ -1,22 +1,21 @@
-# Define variables
-CRYSTAL=crystal
-SPEC=$(CRYSTAL) spec
+BINARY=bin/crystal2nix
 
 default: build
 
+$(BINARY): build
+
 .PHONY: build
-build:
-    @shards build
+build: clean
+	@shards build
 
-# Default target
 .PHONY: check
-check: build
-    ./bin/crystal2nix
+check: $(BINARY)
+	@crystal spec
 
-# Clean target
 .PHONY: clean
 clean:
-    @echo "Cleaning up..."
-    rm -f shard.lock shards.nix
+	@rm -f $(BINARY)
 
-# You can add more targets as needed
+.PHONY: run
+run: $(BINARY)
+	$(BINARY)

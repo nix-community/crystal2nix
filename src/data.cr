@@ -16,6 +16,7 @@ module Crystal2Nix
     include YAML::Serializable
 
     property git : String
+    property hg : String?
     property version : String
   end
 end
