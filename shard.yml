@@ -17,6 +17,9 @@ dependencies:
   version_from_shard:
     github: hugopl/version_from_shard
     version: ~> 1.2.4
+ 
+
+  
 
 development_dependencies:
   spectator:

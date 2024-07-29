@@ -1,4 +1,14 @@
 {
+  clang = {
+    url = "https://github.com/crystal-lang/clang.cr.git";
+    rev = "aa740ce5d2e9af6d858f9b0df2154a4cd7c9d1db";
+    sha256 = "0yy3v93in5w1prcrnfh0qvlx2s2v72d8f7s1yk2fym7b64ywj6pc";
+  };
+  crystal_lib = {
+    url = "https://github.com/crystal-lang/crystal_lib.git";
+    rev = "c3012aad7eb0074ba09fc8086dc6f4439a363eba";
+    sha256 = "0gkavqli45kqyahb7d0n1bi73vqhdf86m6j6dk8q0z5j6gmz30qi";
+  };
   spectator = {
     url = "https://gitlab.com/arctic-fox/spectator.git";
     rev = "v0.10.6";

@@ -1,6 +1,5 @@
 require "../src/crystal2nix"
 require "spec"
-require "file_utils"
 
 # Helper method to create a temporary file
 def create_tempfile(content : String) : String
@@ -14,11 +13,12 @@ def delete_tempfile(filename : String)
   File.delete(filename) if File.exists?(filename)
 end
 
-# Test case for conversion from shard.lock to shards.nix
 describe "Conversion from shard.lock to shards.nix" do
   before_each do
     ENV["NO_NETWORK"] = "true"
+  end
 
+  it "should generate a shards.nix file from shard.lock" do
     # Create a temporary shard.lock file with test dependencies in YAML format
     shard_lock_content = <<-YAML
     version: 1.0
@@ -36,19 +36,20 @@ describe "Conversion from shard.lock to shards.nix" do
     # Run crystal2nix to generate shards.nix
     `bin/crystal2nix #{temp_filename}`
 
-    delete_tempfile(temp_filename)  # Clean up temporary file
-  end
-
-  it "should generate a shards.nix file from shard.lock" do
+    # Assertions
     File.exists?("shards.nix").should be_true
+
+    # Clean up the temporary file
+    delete_tempfile(temp_filename)
   end
 end
 
-# Test case for validation of generated Nix expression
 describe "Validation of generated Nix expression" do
   before_each do
     ENV["NO_NETWORK"] = "true"
+  end
 
+  it "should produce a valid Nix expression in shards.nix" do
     # Create a temporary shard.lock file with test dependencies in YAML format
     shard_lock_content = <<-YAML
     version: 1.0
@@ -63,10 +64,10 @@ describe "Validation of generated Nix expression" do
     # Run crystal2nix to generate shards.nix
     `bin/crystal2nix #{temp_filename}`
 
-    delete_tempfile(temp_filename)  # Clean up temporary file
-  end
-
-  it "should produce a valid Nix expression in shards.nix" do
+    # Assertions
     File.exists?("shards.nix").should be_true
+
+    # Clean up the temporary file
+    delete_tempfile(temp_filename)
   end
 end
