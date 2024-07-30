@@ -10,7 +10,11 @@ build: clean
 
 .PHONY: check
 check: $(BINARY)
-	@crystal spec
+	@crystal spec spec/default_spec.cr
+
+.PHONY: test
+test: $(BINARY)
+	@crystal spec spec/
 
 .PHONY: clean
 clean:

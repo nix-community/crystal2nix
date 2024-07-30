@@ -1,13 +1,5 @@
 version: 2.0
 shards:
-  clang:
-    git: https://github.com/crystal-lang/clang.cr.git
-    version: 0.3.0+git.commit.aa740ce5d2e9af6d858f9b0df2154a4cd7c9d1db
-
-  crystal_lib:
-    git: https://github.com/crystal-lang/crystal_lib.git
-    version: 0.1.0+git.commit.c3012aad7eb0074ba09fc8086dc6f4439a363eba
-
   spectator:
     git: https://gitlab.com/arctic-fox/spectator.git
     version: 0.10.6
