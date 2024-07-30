@@ -10,10 +10,11 @@ build: clean
 
 .PHONY: check
 check: $(BINARY)
-	@crystal spec spec/default_spec.cr
+	@crystal spec spec/repo_spec.cr
+	@crystal spec spec/repo_mercurial_spec.cr
 
-.PHONY: test
-test: $(BINARY)
+.PHONY: all-tests
+all-tests: $(BINARY)
 	@crystal spec spec/
 
 .PHONY: clean

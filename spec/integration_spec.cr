@@ -13,12 +13,8 @@ def delete_tempfile(filename : String)
   File.delete(filename) if File.exists?(filename)
 end
 
-describe "Conversion from shard.lock to shards.nix" do
-  before_each do
-    ENV["NO_NETWORK"] = "true"
-  end
-
-  it "should generate a shards.nix file from shard.lock" do
+describe "Conversion from shard.lock to shards.nix", tags: ["online"] do
+  it "should generate a shards.nix file from shard.lock", tags: ["online"] do
     # Create a temporary shard.lock file with test dependencies in YAML format
     shard_lock_content = <<-YAML
     version: 1.0
@@ -44,12 +40,8 @@ describe "Conversion from shard.lock to shards.nix" do
   end
 end
 
-describe "Validation of generated Nix expression" do
-  before_each do
-    ENV["NO_NETWORK"] = "true"
-  end
-
-  it "should produce a valid Nix expression in shards.nix" do
+describe "Validation of generated Nix expression", tags: ["online"] do
+  it "should produce a valid Nix expression in shards.nix", tags: ["online"] do
     # Create a temporary shard.lock file with test dependencies in YAML format
     shard_lock_content = <<-YAML
     version: 1.0

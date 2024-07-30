@@ -12,6 +12,17 @@ You don't need to install it. With nix installed you can just run it:
 
 `crystal2nix`
 
+## Testing
+
+To test only the unit test cases
+
+`make check`
+
+To test all the test cases 
+
+`make all-tests`
+
+
 ## Development
 
 We will welcome all help with open arms!

@@ -5,17 +5,22 @@ module Crystal2Nix
     getter type : Symbol
 
     def initialize(entry : Shard)
-      if entry.git.not_nil!
-        @url = URI.parse(entry.git.not_nil!)
+      git_url = entry.git.try(&.not_nil!) # Safely access entry.git
+      hg_url = entry.hg.try(&.not_nil!)   # Safely access entry.hg
+
+      if git_url
+        @url = URI.parse(git_url)
         @type = :git
-      elsif entry.hg.not_nil!
-        @url = URI.parse(entry.hg.not_nil!)
+      elsif hg_url
+        @url = URI.parse(hg_url)
         @type = :hg
       else
         raise "Unknown repository type"
       end
 
-      @rev = if entry.version =~ /^(?<version>.+)\+git\.commit\.(?<rev>.+)$/
+      @rev = if entry.version =~ /(?<version>.+)\+git\.commit\.(?<rev>.+)/
+               $~["rev"]
+             elsif entry.version =~ /(?<version>.+)\+hg\.commit\.(?<rev>.+)/
                $~["rev"]
              else
                "v#{entry.version}"

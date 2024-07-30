@@ -15,7 +15,7 @@ module Crystal2Nix
   class Shard
     include YAML::Serializable
 
-    property git : String
+    property git : String?
     property hg : String?
     property version : String
   end
