@@ -1,7 +1,7 @@
 require "./spec_helper"
 
 Spectator.describe Crystal2Nix::Repo do
-  context "commit" do
+  context "commit", tag: :offline do
     let(:with_commit) {
       <<-EOF
       git: https://github.com/cadmiumcr/transliterator.git
@@ -18,7 +18,7 @@ Spectator.describe Crystal2Nix::Repo do
     end
   end
 
-  context "explicit version" do
+  context "explicit version", tag: :offline do
     let(:with_version) {
       <<-EOF
       git: https://github.com/crystal-lang/json_mapping.cr.git
@@ -35,7 +35,7 @@ Spectator.describe Crystal2Nix::Repo do
     end
   end
 
-  context "semver with pre-release" do
+  context "semver with pre-release", tag: :offline do
     let(:with_pre_release) {
       <<-EOF
       git: https://github.com/crystal-lang/crystal.git
@@ -52,7 +52,7 @@ Spectator.describe Crystal2Nix::Repo do
     end
   end
 
-  context "semver with build metadata" do
+  context "semver with build metadata", tag: :offline do
     let(:with_build_metadata) {
       <<-EOF
       git: https://github.com/crystal-lang/crystal.git
@@ -69,7 +69,7 @@ Spectator.describe Crystal2Nix::Repo do
     end
   end
 
-  context "git commit in version" do
+  context "git commit in version", tag: :offline do
     let(:with_commit_version) {
       <<-EOF
       git: https://github.com/crystal-lang/crystal.git
@@ -86,7 +86,7 @@ Spectator.describe Crystal2Nix::Repo do
     end
   end
 
-  context "malformed yaml" do
+  context "malformed yaml", tag: :offline do
     let(:malformed_yaml) {
       <<-EOF
       git: https://github.com/crystal-lang/crystal.git
