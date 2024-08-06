@@ -1,7 +1,7 @@
 require "./spec_helper"
 
 Spectator.describe Crystal2Nix::Repo do
-  context "commit", tag: :offline do
+  context "commit" do
     let(:with_commit) {
       <<-EOF
       git: https://github.com/cadmiumcr/transliterator.git
@@ -13,12 +13,12 @@ Spectator.describe Crystal2Nix::Repo do
       Crystal2Nix::Repo.new(Crystal2Nix::Shard.from_yaml(with_commit))
     }
 
-    it "should have the commit as revision" do
+    it "should have the commit as revision", :offline do
       expect(repo.rev).to eq("46c4c14594057dbcfaf27e7e7c8c164d3f0ce3f1")
     end
   end
 
-  context "explicit version", tag: :offline do
+  context "explicit version" do
     let(:with_version) {
       <<-EOF
       git: https://github.com/crystal-lang/json_mapping.cr.git
@@ -30,12 +30,12 @@ Spectator.describe Crystal2Nix::Repo do
       Crystal2Nix::Repo.new(Crystal2Nix::Shard.from_yaml(with_version))
     }
 
-    it "should prefix version references with a v" do
+    it "should prefix version references with a v", :offline do
       expect(repo.rev).to eq("v0.1.1")
     end
   end
 
-  context "semver with pre-release", tag: :offline do
+  context "semver with pre-release" do
     let(:with_pre_release) {
       <<-EOF
       git: https://github.com/crystal-lang/crystal.git
@@ -47,12 +47,12 @@ Spectator.describe Crystal2Nix::Repo do
       Crystal2Nix::Repo.new(Crystal2Nix::Shard.from_yaml(with_pre_release))
     }
 
-    it "should handle semver with pre-release correctly" do
+    it "should handle semver with pre-release correctly", :offline do
       expect(repo.rev).to eq("v1.0.0-beta1")
     end
   end
 
-  context "semver with build metadata", tag: :offline do
+  context "semver with build metadata" do
     let(:with_build_metadata) {
       <<-EOF
       git: https://github.com/crystal-lang/crystal.git
@@ -64,12 +64,12 @@ Spectator.describe Crystal2Nix::Repo do
       Crystal2Nix::Repo.new(Crystal2Nix::Shard.from_yaml(with_build_metadata))
     }
 
-    it "should handle semver with build metadata correctly" do
+    it "should handle semver with build metadata correctly", :offline do
       expect(repo.rev).to eq("v1.0.0+20130313144700")
     end
   end
 
-  context "git commit in version", tag: :offline do
+  context "git commit in version" do
     let(:with_commit_version) {
       <<-EOF
       git: https://github.com/crystal-lang/crystal.git
@@ -81,12 +81,12 @@ Spectator.describe Crystal2Nix::Repo do
       Crystal2Nix::Repo.new(Crystal2Nix::Shard.from_yaml(with_commit_version))
     }
 
-    it "should handle git commit in version correctly" do
+    it "should handle git commit in version correctly", :offline do
       expect(repo.rev).to eq("abcdef1234567890")
     end
   end
 
-  context "malformed yaml", tag: :offline do
+  context "malformed yaml" do
     let(:malformed_yaml) {
       <<-EOF
       git: https://github.com/crystal-lang/crystal.git
@@ -94,7 +94,7 @@ Spectator.describe Crystal2Nix::Repo do
       EOF
     }
 
-    it "should raise an error for malformed YAML" do
+    it "should raise an error for malformed YAML", :offline do
       expect_raises(YAML::ParseException) do
         Crystal2Nix::Repo.new(Crystal2Nix::Shard.from_yaml(malformed_yaml))
       end
