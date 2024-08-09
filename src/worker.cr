@@ -15,20 +15,33 @@ module Crystal2Nix
             exit 1
           end
           sha256 = ""
-          args = [
-            "--no-deepClone",
-            "--url", repo.url,
-            "--rev", repo.rev,
-          ]
+
           if repo.type == :git
+            args = [
+              "--no-deepClone",
+              "--url", repo.url,
+              "--rev", repo.rev,
+            ]
             Process.run("nix-prefetch-git", args: args) do |x|
               x.error.each_line { |e| puts e }
               sha256 = PrefetchJSON.from_json(x.output).sha256
             end
           elsif repo.type == :hg
+            # Correct invocation for nix-prefetch-hg
+            args = [
+              repo.url,
+              repo.rev,
+            ]
             Process.run("nix-prefetch-hg", args: args) do |x|
               x.error.each_line { |e| puts e }
-              sha256 = PrefetchJSON.from_json(x.output).sha256
+
+              # Check if the output is empty or an error
+              if x.output.strip.empty?
+                STDERR.puts "Failed to fetch hash with nix-prefetch"
+                exit 1
+              else
+                sha256 = x.output.strip
+              end
             end
           end
 
