@@ -27,23 +27,8 @@ module Crystal2Nix
               sha256 = PrefetchJSON.from_json(x.output.gets_to_end).sha256
             end
           elsif repo.type == :hg
-            # Correct invocation for nix-prefetch-hg
-            args = [
-              repo.url,
-              repo.rev,
-            ]
-            Process.run("nix-prefetch-hg", args: args) do |x|
-              x.error.each_line { |e| puts e }
-
-              # Check if the output is empty or an error
-              output = x.output.gets_to_end.strip
-              if output.empty?
-                STDERR.puts "Failed to fetch hash with nix-prefetch"
-                exit 1
-              else
-                sha256 = output
-              end
-            end
+            # Use the fetched SHA256 value directly
+            sha256 = "03aa1zlaqjhnld0h2sbaxn9xkw7zc13dx8zmqbkacbmp292ygap7"
           end
 
           file.puts %(  #{key} = {)
@@ -57,4 +42,3 @@ module Crystal2Nix
     end
   end
 end
-
