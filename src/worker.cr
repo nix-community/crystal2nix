@@ -37,7 +37,7 @@ module Crystal2Nix
             ]
             Process.run("nix-prefetch-hg", args: args) do |process|
               process.error.each_line { |e| puts e }
-              output = process.output.gets_to_end
+              hash = process.output.gets_to_end
 
 
             end
