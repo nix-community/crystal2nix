@@ -14,27 +14,43 @@ module Crystal2Nix
             STDERR.puts "Unable to parse repository entry"
             exit 1
           end
-          sha256 = ""
 
-          if repo.type == :git
+          hash = ""
+
+          case repo.type
+          when :git
             args = [
               "--no-deepClone",
               "--url", repo.url,
               "--rev", repo.rev,
             ]
-            Process.run("nix-prefetch-git", args: args) do |x|
-              x.error.each_line { |e| puts e }
-              sha256 = PrefetchJSON.from_json(x.output.gets_to_end).sha256
+            Process.run("nix-prefetch-git", args: args) do |process|
+              process.error.each_line { |e| puts e }
+              hash = PrefetchJSON.from_json(process.output.gets_to_end).sha256
             end
-          elsif repo.type == :hg
-            # Use the fetched SHA256 value directly
-            sha256 = "03aa1zlaqjhnld0h2sbaxn9xkw7zc13dx8zmqbkacbmp292ygap7"
+
+          when :hg
+            args = [
+              "--no-deepClone",
+              "--url", repo.url,
+              "--rev", repo.rev,
+            ]
+            Process.run("nix-prefetch-hg", args: args) do |process|
+              process.error.each_line { |e| puts e }
+              output = process.output.gets_to_end
+
+
+            end
+
+          else
+            STDERR.puts "Unknown repository type: #{repo.type}"
+            hash = "hash not found"
           end
 
           file.puts %(  #{key} = {)
           file.puts %(    url = "#{repo.url}";)
           file.puts %(    rev = "#{repo.rev}";)
-          file.puts %(    sha256 = "#{sha256}";)
+          file.puts %(    hash = "#{hash}";)
           file.puts %(  };)
         end
         file.puts %(})
