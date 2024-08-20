@@ -18,9 +18,7 @@ module Crystal2Nix
         raise "Unknown repository type"
       end
 
-      @rev = if entry.version =~ /(?<version>.+)\+git\.commit\.(?<rev>.+)/
-               $~["rev"]
-             elsif entry.version =~ /(?<version>.+)\+hg\.commit\.(?<rev>.+)/
+      @rev = if entry.version =~ /(?<version>.+)\+(git|hg)\.commit\.(?<rev>.+)/
                $~["rev"]
              else
                "v#{entry.version}"

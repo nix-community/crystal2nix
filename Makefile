@@ -16,10 +16,6 @@ all-tests: $(BINARY)
 check: $(BINARY)
 	@crystal spec --tag ~online
 
-.PHONY: test-offline
-test-offline: $(BINARY)
-	@crystal spec --tag offline
-
 .PHONY: test-online
 test-online: $(BINARY)
 	@crystal spec --tag online

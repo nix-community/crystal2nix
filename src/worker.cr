@@ -25,7 +25,7 @@ module Crystal2Nix
             ]
             Process.run("nix-prefetch-git", args: args) do |process|
               process.error.each_line { |e| STDERR.puts e }
-              hash = PrefetchJSON.from_json(process.output.gets_to_end).sha256
+              hash = GitPrefetchJSON.from_json(process.output.gets_to_end).sha256
             end
 
           when :hg

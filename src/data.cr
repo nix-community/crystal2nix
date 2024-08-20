@@ -1,5 +1,5 @@
 module Crystal2Nix
-  class PrefetchJSON
+  class GitPrefetchJSON
     include JSON::Serializable
 
     property sha256 : String

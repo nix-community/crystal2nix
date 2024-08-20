@@ -1,8 +1,8 @@
 require "./spec_helper"
 
-Spectator.describe Crystal2Nix::Conversion do
+Spectator.describe Crystal2Nix::Conversion , :online do
   context "Conversion from shard.lock to shards.nix" do
-    it "should generate a shards.nix file from shard.lock", :online do
+    it "should generate a shards.nix file from shard.lock" do
       # Create a temporary shard.lock file with test dependencies in YAML format
       shard_lock_content = <<-EOF
       version: 1.0
@@ -29,7 +29,7 @@ Spectator.describe Crystal2Nix::Conversion do
   end
 
   context "Validation of generated Nix expression" do
-    it "should produce a valid Nix expression in shards.nix", :online do
+    it "should produce a valid Nix expression in shards.nix" do
       # Create a temporary shard.lock file with test dependencies in YAML format
       shard_lock_content = <<-EOF
       version: 1.0
