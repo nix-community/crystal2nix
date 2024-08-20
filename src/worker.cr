@@ -20,26 +20,27 @@ module Crystal2Nix
           case repo.type
           when :git
             args = [
-              "--no-deepClone",
               "--url", repo.url,
               "--rev", repo.rev,
             ]
             Process.run("nix-prefetch-git", args: args) do |process|
-              process.error.each_line { |e| puts e }
+              process.error.each_line { |e| STDERR.puts e }
               hash = PrefetchJSON.from_json(process.output.gets_to_end).sha256
             end
 
           when :hg
             args = [
-              "--no-deepClone",
-              "--url", repo.url,
-              "--rev", repo.rev,
+              repo.url,
+              repo.rev,
             ]
             Process.run("nix-prefetch-hg", args: args) do |process|
-              process.error.each_line { |e| puts e }
-              hash = process.output.gets_to_end
-
-
+              process.error.each_line { |e| STDERR.puts e }
+              output = process.output.gets_to_end
+              hash = output.strip.split("\n").first
+              if hash.nil? || hash.empty?
+                STDERR.puts "Failed to fetch hash for hg repository: #{repo.url}"
+                hash = "hash not found"
+              end
             end
 
           else

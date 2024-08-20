@@ -7,7 +7,7 @@
   carbon_smtp_adapter = {
     url = "https://hg.sr.ht/~peterhoeg/dummy";
     rev = "4048cd7e156f3d4317e10ebd4e742020c8049310";
-    hash = "";
+    hash = "1ak6mhcfdp45m8hpd65a7jai092wk6s30p57saxf6wilayj624d4";
   };
   email = {
     url = "https://github.com/arcage/crystal-email.git";
