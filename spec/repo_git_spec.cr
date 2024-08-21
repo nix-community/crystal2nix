@@ -100,4 +100,16 @@ Spectator.describe Crystal2Nix::Repo do
       end
     end
   end
+
+  context "empty file" do
+    let(:empty_file_content) {
+      ""
+    }
+
+    it "should raise an error for empty file" do
+      expect_raises(YAML::ParseException) do
+        Crystal2Nix::Repo.new(Crystal2Nix::Shard.from_yaml(empty_file_content))
+      end
+    end
+  end
 end

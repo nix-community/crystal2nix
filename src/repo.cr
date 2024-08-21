@@ -7,6 +7,8 @@ module Crystal2Nix
     def initialize(entry : Shard)
       git_url = entry.git.try(&.not_nil!) # Safely access entry.git
       hg_url = entry.hg.try(&.not_nil!)   # Safely access entry.hg
+      fossil_url = entry.fossil.try(&.not_nil!) # Safely access entry.fossil
+
 
       if git_url
         @url = URI.parse(git_url)
@@ -14,11 +16,14 @@ module Crystal2Nix
       elsif hg_url
         @url = URI.parse(hg_url)
         @type = :hg
+      elsif fossil_url
+        @url = URI.parse(fossil_url)
+        @type = :fossil
       else
         raise "Unknown repository type"
       end
 
-      @rev = if entry.version =~ /(?<version>.+)\+(git|hg)\.commit\.(?<rev>.+)/
+      @rev = if entry.version =~ /(?<version>.+)\+(git|hg|fossil)\.commit\.(?<rev>.+)/
                $~["rev"]
              else
                "v#{entry.version}"

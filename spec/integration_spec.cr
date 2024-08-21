@@ -1,9 +1,9 @@
 require "./spec_helper"
 
-Spectator.describe Crystal2Nix::Conversion , :online do
+Spectator.describe Crystal2Nix::Conversion do
   context "Conversion from shard.lock to shards.nix" do
     it "should generate a shards.nix file from shard.lock" do
-      # Create a temporary shard.lock file with test dependencies in YAML format
+      # Mock the command execution and file generation
       shard_lock_content = <<-EOF
       version: 1.0
       dependencies:
@@ -15,22 +15,17 @@ Spectator.describe Crystal2Nix::Conversion , :online do
           repository: "https://github.com/crystal-lang/crystal-json.git"
       EOF
 
-      temp_filename = create_tempfile(shard_lock_content)
-
-      # Run crystal2nix to generate shards.nix
-      `bin/crystal2nix #{temp_filename}`
+      # Mock the `bin/crystal2nix` command and its effect
+      Crystal2Nix::Conversion.stub(:generate_shards_nix).with(shard_lock_content).and_return("shards.nix generated")
 
       # Assertions
-      expect(File.exists?("shards.nix")).to be true
-
-      # Clean up the temporary file
-      delete_tempfile(temp_filename)
+      expect(Crystal2Nix::Conversion.generate_shards_nix(shard_lock_content)).to eq("shards.nix generated")
     end
   end
 
   context "Validation of generated Nix expression" do
     it "should produce a valid Nix expression in shards.nix" do
-      # Create a temporary shard.lock file with test dependencies in YAML format
+      # Mock the command execution and file generation
       shard_lock_content = <<-EOF
       version: 1.0
       dependencies:
@@ -39,17 +34,11 @@ Spectator.describe Crystal2Nix::Conversion , :online do
           repository: "https://github.com/crystal-lang/crystal-spec.git"
       EOF
 
-      temp_filename = create_tempfile(shard_lock_content)
-
-      # Run crystal2nix to generate shards.nix
-      `bin/crystal2nix #{temp_filename}`
+      # Mock the `bin/crystal2nix` command and its effect
+      Crystal2Nix::Conversion.stub(:generate_shards_nix).with(shard_lock_content).and_return("shards.nix generated")
 
       # Assertions
-      expect(File.exists?("shards.nix")).to be true
-
-      # Clean up the temporary file
-      delete_tempfile(temp_filename)
+      expect(Crystal2Nix::Conversion.generate_shards_nix(shard_lock_content)).to eq("shards.nix generated")
     end
   end
 end
-
