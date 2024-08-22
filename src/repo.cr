@@ -16,14 +16,11 @@ module Crystal2Nix
       elsif hg_url
         @url = URI.parse(hg_url)
         @type = :hg
-      elsif fossil_url
-        @url = URI.parse(fossil_url)
-        @type = :fossil
       else
         raise "Unknown repository type"
       end
 
-      @rev = if entry.version =~ /(?<version>.+)\+(git|hg|fossil)\.commit\.(?<rev>.+)/
+      @rev = if entry.version =~ /(?<version>.+)\+(git|hg)\.commit\.(?<rev>.+)/
                $~["rev"]
              else
                "v#{entry.version}"

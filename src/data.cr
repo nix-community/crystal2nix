@@ -17,7 +17,6 @@ module Crystal2Nix
 
     property git : String?
     property hg : String?
-    property fossil : String?
     property version : String
   end
 end

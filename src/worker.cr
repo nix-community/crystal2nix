@@ -43,20 +43,6 @@ module Crystal2Nix
               end
             end
 
-          when :fossil
-            args = [
-              "--url", repo.url,
-              "--rev", repo.rev,
-            ]
-            Process.run("nix-prefetch-url", args: args) do |process|
-              process.error.each_line { |e| STDERR.puts e }
-              hash = process.output.gets_to_end.strip
-              if hash.nil? || hash.empty?
-                STDERR.puts "Failed to fetch hash for fossil repository: #{repo.url}"
-                hash = "hash not found"
-              end
-            end
-
           else
             STDERR.puts "Unknown repository type: #{repo.type}"
             hash = "hash not found"

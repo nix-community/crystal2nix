@@ -39,3 +39,4 @@ We will welcome all help with open arms!
 
 - [Michael Fellinger](https://github.com/manveru)
 - [Peter Hoeg](https://github.com/peterhoeg)
+- [Vidhvath J](https://github.com/vidhvath28)
