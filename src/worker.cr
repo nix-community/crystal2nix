@@ -15,7 +15,7 @@ module Crystal2Nix
             exit 1
           end
 
-          hash = ""
+          sha256 = ""
 
           case repo.type
           when :git
@@ -25,7 +25,8 @@ module Crystal2Nix
             ]
             Process.run("nix-prefetch-git", args: args) do |process|
               process.error.each_line { |e| STDERR.puts e }
-              hash = GitPrefetchJSON.from_json(process.output.gets_to_end).sha256
+              json_output = process.output.gets_to_end
+              sha256 = GitPrefetchJSON.from_json(json_output).sha256
             end
 
           when :hg
@@ -36,22 +37,22 @@ module Crystal2Nix
             Process.run("nix-prefetch-hg", args: args) do |process|
               process.error.each_line { |e| STDERR.puts e }
               output = process.output.gets_to_end
-              hash = output.strip.split("\n").first
-              if hash.nil? || hash.empty?
-                STDERR.puts "Failed to fetch hash for hg repository: #{repo.url}"
-                hash = "hash not found"
+              sha256 = output.strip.split("\n").first
+              if sha256.nil? || sha256.empty?
+                STDERR.puts "Failed to fetch SHA-256 hash for hg repository: #{repo.url}"
+                sha256 = "hash not found"
               end
             end
 
           else
             STDERR.puts "Unknown repository type: #{repo.type}"
-            hash = "hash not found"
+            sha256 = "hash not found"
           end
 
           file.puts %(  #{key} = {)
           file.puts %(    url = "#{repo.url}";)
           file.puts %(    rev = "#{repo.rev}";)
-          file.puts %(    hash = "#{hash}";)
+          file.puts %(    sha256 = "#{sha256}";)
           file.puts %(  };)
         end
         file.puts %(})

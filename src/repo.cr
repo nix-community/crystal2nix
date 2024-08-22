@@ -7,9 +7,7 @@ module Crystal2Nix
     def initialize(entry : Shard)
       git_url = entry.git.try(&.not_nil!) # Safely access entry.git
       hg_url = entry.hg.try(&.not_nil!)   # Safely access entry.hg
-      fossil_url = entry.fossil.try(&.not_nil!) # Safely access entry.fossil
-
-
+      
       if git_url
         @url = URI.parse(git_url)
         @type = :git
