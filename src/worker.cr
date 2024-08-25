@@ -9,10 +9,11 @@ module Crystal2Nix
       File.open SHARDS_NIX, "w+" do |file|
         file.puts %({)
         ShardLock.from_yaml(File.read(@lock_file)).shards.each do |key, value|
-          repo = Repo.new value
-          if repo.nil?
-            STDERR.puts "Unable to parse repository entry"
-            exit 1
+          begin
+            repo = Repo.new value
+          rescue ex : Exception
+            STDERR.puts "Error processing repository #{key}: #{ex.message}"
+            next
           end
 
           sha256 = ""
@@ -38,15 +39,12 @@ module Crystal2Nix
               process.error.each_line { |e| STDERR.puts e }
               output = process.output.gets_to_end
               sha256 = output.strip.split("\n").first
-              if sha256.nil? || sha256.empty?
-                STDERR.puts "Failed to fetch SHA-256 hash for hg repository: #{repo.url}"
-                sha256 = "hash not found"
-              end
             end
 
           else
-            STDERR.puts "Unknown repository type: #{repo.type}"
-            sha256 = "hash not found"
+            STDERR.puts "Unsupported repository type for #{key}: #{repo.type}"
+            STDERR.puts "Currently supported types are: git, hg"
+            next
           end
 
           file.puts %(  #{key} = {)
