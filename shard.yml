@@ -1,3 +1,4 @@
+---
 name: crystal2nix
 version: 0.3.0
 license: MIT
@@ -16,10 +17,8 @@ dependencies:
   version_from_shard:
     github: hugopl/version_from_shard
     version: ~> 1.2.4
+    
 
-  carbon_smtp_adapter:
-    hg: https://hg.sr.ht/~peterhoeg/dummy
-    version: ~> 0.1.1
 
 development_dependencies:
   spectator:

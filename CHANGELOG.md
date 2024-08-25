@@ -1,5 +1,9 @@
-### v0.4.0 
-(IN PROGRESS)
+### v0.4.0
+
+Minor Changes:
+- Code Refactoring: Refactored code for improved readability and maintainability.
+- Testing Enhancements: Expanded test suite to cover new features and added integration tests for Mercurial repositories.
+- Build System Improvements: Updated flake.nix and Makefile for a smoother development process.
 
 ### v0.3.0 2022-04-09
 
