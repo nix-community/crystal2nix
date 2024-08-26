@@ -5,9 +5,9 @@ module Crystal2Nix
     getter type : Symbol
 
     def initialize(entry : Shard)
-      git_url = entry.git.try(&.not_nil!) # Safely access entry.git
-      hg_url = entry.hg.try(&.not_nil!)   # Safely access entry.hg
-      
+      git_url = entry.git.try(&.not_nil!)
+      hg_url = entry.hg.try(&.not_nil!)  
+
       if git_url
         @url = URI.parse(git_url)
         @type = :git

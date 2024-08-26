@@ -16,14 +16,10 @@ To generate a Nix expression for your Crystal project, simply run:
 
 `crystal2nix`
 
-This command will create a shards.nix file in your project directory, containing the necessary Nix expressions to build your project with Nix.
 
 ## Testing
 
 Unit Tests
-
-To test only the unit test cases
-Unit tests focus on verifying the functionality of individual components within the crystal2nix project. These tests are designed to be quick and isolated, ensuring that each class or method behaves as intended under various conditions.
 
 `make check`
 

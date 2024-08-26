@@ -72,8 +72,6 @@ module Crystal2Nix
             errors << error_message
             break
           end
-
-          # Write to the temporary file
           file.puts %(  #{key} = {)
           file.puts %(    url = "#{repo.url}";)
           file.puts %(    rev = "#{repo.rev}";)
@@ -82,8 +80,6 @@ module Crystal2Nix
         end
         file.puts %(})
       end
-
-      # If no errors, move the temporary file to shards.nix
       if errors.empty?
         File.rename(temp_file_path, SHARDS_NIX)
         puts "Processing completed successfully with no errors."
