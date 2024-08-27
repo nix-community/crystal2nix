@@ -6,13 +6,18 @@ module Crystal2Nix
     end
 
     def run
-      File.open SHARDS_NIX, "w+" do |file|
+      errors = [] of String
+      temp_file_path = "#{SHARDS_NIX}.tmp"
+
+      File.open temp_file_path, "w+" do |file|
         file.puts %({)
         ShardLock.from_yaml(File.read(@lock_file)).shards.each do |key, value|
           begin
             repo = Repo.new value
           rescue ex : Exception
-            STDERR.puts "Error processing repository #{key}: #{ex.message}"
+            error_message = "Error processing repository '#{key}': #{ex.message}. Please check the repository details and try again."
+            STDERR.puts error_message
+            errors << error_message
             next
           end
 
@@ -24,10 +29,20 @@ module Crystal2Nix
               "--url", repo.url,
               "--rev", repo.rev,
             ]
-            Process.run("nix-prefetch-git", args: args) do |process|
-              process.error.each_line { |e| STDERR.puts e }
-              json_output = process.output.gets_to_end
-              sha256 = GitPrefetchJSON.from_json(json_output).sha256
+            begin
+              Process.run("nix-prefetch-git", args: args) do |process|
+                process.error.each_line { |e| STDERR.puts e }
+                json_output = process.output.gets_to_end
+                sha256 = GitPrefetchJSON.from_json(json_output).sha256
+              end
+            rescue ex : Exception
+              error_message = "Error running nix-prefetch-git for '#{key}': #{ex.message}.
+                Try running the command manually to troubleshoot:
+                nix-prefetch-git --url #{repo.url} --rev #{repo.rev}
+                Ensure that the git repository is accessible and try again."
+              STDERR.puts error_message
+              errors << error_message
+              next
             end
 
           when :hg
@@ -35,18 +50,28 @@ module Crystal2Nix
               repo.url,
               repo.rev,
             ]
-            Process.run("nix-prefetch-hg", args: args) do |process|
-              process.error.each_line { |e| STDERR.puts e }
-              output = process.output.gets_to_end
-              sha256 = output.strip.split("\n").first
+            begin
+              Process.run("nix-prefetch-hg", args: args) do |process|
+                process.error.each_line { |e| STDERR.puts e }
+                output = process.output.gets_to_end
+                sha256 = output.strip.split("\n").first
+              end
+            rescue ex : Exception
+              error_message = "Error running nix-prefetch-hg for '#{key}': #{ex.message}.
+                      Try running the command manually to troubleshoot:
+                      nix-prefetch-hg #{repo.url} #{repo.rev}
+                      Ensure that the Mercurial repository is accessible and try again."
+              STDERR.puts error_message
+              errors << error_message
+              next
             end
 
           else
-            STDERR.puts "Unsupported repository type for #{key}: #{repo.type}"
-            STDERR.puts "Currently supported types are: git, hg"
-            next
+            error_message = "Unsupported repository type for '#{key}': #{repo.type}. Currently supported types are: git, hg. Please update your configuration or contact support for further assistance."
+            STDERR.puts error_message
+            errors << error_message
+            break
           end
-
           file.puts %(  #{key} = {)
           file.puts %(    url = "#{repo.url}";)
           file.puts %(    rev = "#{repo.rev}";)
@@ -54,6 +79,15 @@ module Crystal2Nix
           file.puts %(  };)
         end
         file.puts %(})
+      end
+      if errors.empty?
+        File.rename(temp_file_path, SHARDS_NIX)
+        puts "Processing completed successfully with no errors."
+      else
+        File.delete(temp_file_path)
+        STDERR.puts "\nSummary of errors encountered:"
+        errors.each { |error| STDERR.puts "  - #{error}" }
+        STDERR.puts "\nProcess not completed due to the above errors. Please review and resolve them before re-running."
       end
     end
   end
