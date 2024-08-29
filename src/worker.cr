@@ -1,8 +1,14 @@
 module Crystal2Nix
   SHARDS_NIX = "shards.nix"
-  
+
   class Worker
     def initialize(@lock_file : String)
+      @errors = [] of String
+    end
+
+    def log_message(msg)
+      STDERR.puts msg
+      @errors << msg
     end
 
     def run
@@ -15,9 +21,8 @@ module Crystal2Nix
           begin
             repo = Repo.new value
           rescue ex : Exception
-            error_message = "Error processing repository '#{key}': #{ex.message}. Please check the repository details and try again."
-            STDERR.puts error_message
-            errors << error_message
+            log_message = "Error processing repository '#{key}': #{ex.message}. Please check the repository details and try again."
+
             next
           end
 
@@ -36,12 +41,11 @@ module Crystal2Nix
                 sha256 = GitPrefetchJSON.from_json(json_output).sha256
               end
             rescue ex : Exception
-              error_message = "Error running nix-prefetch-git for '#{key}': #{ex.message}.
+              log_message = "Error running nix-prefetch-git for '#{key}': #{ex.message}.
                 Try running the command manually to troubleshoot:
                 nix-prefetch-git #{args.join " "}
                 Ensure that the git repository is accessible and try again."
-              STDERR.puts error_message
-              errors << error_message
+
               next
             end
 
@@ -57,19 +61,17 @@ module Crystal2Nix
                 sha256 = output.strip.split("\n").first
               end
             rescue ex : Exception
-              error_message = "Error running nix-prefetch-hg for '#{key}': #{ex.message}.
+              log_message = "Error running nix-prefetch-hg for '#{key}': #{ex.message}.
                       Try running the command manually to troubleshoot:
                       nix-prefetch-hg #{args.join " "}
                       Ensure that the Mercurial repository is accessible and try again."
-              STDERR.puts error_message
-              errors << error_message
+
               next
             end
 
           else
-            error_message = "Unsupported repository type for '#{key}': #{repo.type}. Currently supported types are: git, hg. Please update your configuration or contact support for further assistance."
-            STDERR.puts error_message
-            errors << error_message
+            log_message = "Unsupported repository type for '#{key}': #{repo.type}. Currently supported types are: git, hg. Please update your configuration or contact support for further assistance."
+
             break
           end
           file.puts %(  #{key} = {)
