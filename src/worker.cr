@@ -1,6 +1,6 @@
 module Crystal2Nix
   SHARDS_NIX = "shards.nix"
-
+  
   class Worker
     def initialize(@lock_file : String)
     end
@@ -38,7 +38,7 @@ module Crystal2Nix
             rescue ex : Exception
               error_message = "Error running nix-prefetch-git for '#{key}': #{ex.message}.
                 Try running the command manually to troubleshoot:
-                nix-prefetch-git --url #{repo.url} --rev #{repo.rev}
+                nix-prefetch-git #{args.join " "}
                 Ensure that the git repository is accessible and try again."
               STDERR.puts error_message
               errors << error_message
@@ -59,7 +59,7 @@ module Crystal2Nix
             rescue ex : Exception
               error_message = "Error running nix-prefetch-hg for '#{key}': #{ex.message}.
                       Try running the command manually to troubleshoot:
-                      nix-prefetch-hg #{repo.url} #{repo.rev}
+                      nix-prefetch-hg #{args.join " "}
                       Ensure that the Mercurial repository is accessible and try again."
               STDERR.puts error_message
               errors << error_message
@@ -81,14 +81,14 @@ module Crystal2Nix
         file.puts %(})
       end
       if errors.empty?
-        File.rename(temp_file_path, SHARDS_NIX)
-        puts "Processing completed successfully with no errors."
-      else
         File.delete(temp_file_path)
         STDERR.puts "\nSummary of errors encountered:"
         errors.each { |error| STDERR.puts "  - #{error}" }
         STDERR.puts "\nProcess not completed due to the above errors. Please review and resolve them before re-running."
+        exit 1
       end
+        File.rename(temp_file_path, SHARDS_NIX)
+        puts "Processing completed successfully with no errors."
     end
   end
 end

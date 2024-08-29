@@ -1,13 +1,12 @@
 # crystal2nix
 
-`crystal2nix` is a sophisticated tool designed to bridge the gap between Crystal programming language projects and the Nix package manager. By generating Nix expressions, crystal2nix streamlines the integration of Crystal projects into the Nix ecosystem, making it easier for developers to manage dependencies, build processes, and maintain consistent development environments.
+`crystal2nix` 
 
 ## Installation
 
 You don't need to install crystal2nix manually. With Nix installed on your system, you can run it directly using the following command:
 
 `nix-shell -p crystal2nix --run crystal2nix`
-
 
 ## Usage
 
@@ -19,7 +18,8 @@ To generate a Nix expression for your Crystal project, simply run:
 
 Unit Tests
 
-These are tests that we specifically want to run within the Nix sandbox. The Nix sandbox environment is designed to be isolated, meaning it can only execute offline tests and does not have access to the internet or external networks.
+These tests can  run offline and thus within the nix sandbox without network connectivity.
+
 
 `make check`
 

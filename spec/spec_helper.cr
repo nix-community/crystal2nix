@@ -2,28 +2,28 @@ require "../src/crystal2nix"
 require "spectator"
 
 module SpecHelper
-  # Ensures the temporary directory exists
-  def self.setup_temp_directory(dir : String)
+  def self.setup_temp_directory(dir)
     Dir.mkdir(dir) unless Dir.exists?(dir)
   end
 
-  # Removes a file if it exists
-  def self.cleanup_file(file_path : String)
+  def self.cleanup_file(file_path)
     File.delete(file_path) if File.exists?(file_path)
   end
 
-  # Writes content to a file
-  def self.write_file(file_path : String, content : String)
+  def self.write_file(file_path, content)
     File.write(file_path, content)
   end
 
-  # Reads content from a file
-  def self.read_file(file_path : String) : String
+  def self.read_file(file_path)
     File.read(file_path)
   end
 
-  # Checks if a file exists
-  def self.file_exists?(file_path : String) : Bool
+  def self.file_exists?(file_path)
     File.exists?(file_path)
+  end
+
+  def self.prepare_for_test(generated_shards_nix)
+    setup_temp_directory("spec/tmp")
+    cleanup_file(generated_shards_nix)
   end
 end
