@@ -12,7 +12,7 @@ module Crystal2Nix
     end
 
     def run
-      temp_file_path = "#{SHARDS_NIX}.tmp"
+      temp_file_path = File.tempfile("shards").path
 
       File.open temp_file_path, "w+" do |file|
         file.puts %({)
@@ -66,7 +66,7 @@ module Crystal2Nix
             end
 
           else
-            log_message "Unsupported repository type for '#{key}': #{repo.type}. Currently supported types are: git, hg. ."
+            log_message "Unsupported repository type for '#{key}': #{repo.type}. Currently supported types are: git, hg."
             break
           end
 
@@ -79,7 +79,6 @@ module Crystal2Nix
         file.puts %(})
       end
 
-      # Check the instance variable @errors instead of the local errors array
       if @errors.any?
         File.delete(temp_file_path)
         STDERR.puts "\nSummary of errors encountered:"
