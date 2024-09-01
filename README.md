@@ -1,5 +1,5 @@
 # crystal2nix  
-is a tool that makes it easier to manage and build Crystal projects using the Nix package manager
+is a tool that makes it easier to manage and build Crystal projects using the Nix package manager ,currently supports git and mercurial sources .
 
 `crystal2nix` 
 
@@ -27,6 +27,12 @@ These tests can  run offline and thus within the nix sandbox without network con
 
 These commands ensure that your changes are tested thoroughly before being pushed to the repository.
 
+`make test-all`
+These command helps use to test both the offline test cases and the integrated test cases together.
+
+`make test-online`
+These command helps you to only test the integrated test cases .
+
 
 ## Development
 
@@ -35,7 +41,7 @@ We welcome all contributions, whether it's bug fixes, new features, or documenta
 ## Future plans 
 
 In the future, we plan to add support for Fossil resources in the Crystal2Nix project
-Add few integrity test case .
+Add few more integrity test case .
 
 
 ## Contributing

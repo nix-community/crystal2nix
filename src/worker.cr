@@ -66,7 +66,7 @@ module Crystal2Nix
             end
 
           else
-            log_message "Unsupported repository type for '#{key}': #{repo.type}. Currently supported types are: git, hg. Please update your configuration or contact support for further assistance."
+            log_message "Unsupported repository type for '#{key}': #{repo.type}. Currently supported types are: git, hg. ."
             break
           end
 
@@ -89,7 +89,7 @@ module Crystal2Nix
       end
 
       File.rename(temp_file_path, SHARDS_NIX)
-      puts "Processing completed successfully with no errors."
+      puts "Processing completed successfully."
     end
   end
 end
