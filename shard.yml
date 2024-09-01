@@ -1,0 +1,26 @@
+---
+name: crystal2nix
+version: 0.3.0
+license: MIT
+repository: https://github.com/nix-community/crystal2nix
+authors:
+  - Michael Fellinger
+  - Peter Hoeg <peter@hoeg.com>
+
+crystal: 1.0.0
+
+targets:
+  crystal2nix:
+    main: src/runner.cr
+
+dependencies:
+  version_from_shard:
+    github: hugopl/version_from_shard
+    version: ~> 1.2.4
+    
+
+
+development_dependencies:
+  spectator:
+    gitlab: arctic-fox/spectator
+    version: ~> 0.10.5
