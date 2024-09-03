@@ -6,7 +6,7 @@ module Crystal2Nix
 
     def initialize(entry : Shard)
       git_url = entry.git.try(&.not_nil!)
-      hg_url = entry.hg.try(&.not_nil!)  
+      hg_url = entry.hg.try(&.not_nil!)
 
       if git_url
         @url = URI.parse(git_url)

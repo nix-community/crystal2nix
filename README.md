@@ -1,7 +1,31 @@
-# crystal2nix  
-crystal2nix is a tool designed to simplify the management and building of Crystal projects using the Nix package manager. It currently supports both Git and Mercurial sources.
 
-`crystal2nix` 
+ [<img src="https://nixos.org/logo/nixos-logo-only-hires.png" width="200" align="right" alt="NixOS">](https://nixos.org)
+
+# Crystal2Nix
+
+Crystal2Nix is a tool designed to generate Nix expressions for Crystal projects. It simplifies the process of managing dependencies and building Crystal applications within the Nix ecosystem.
+
+## Features
+
+- Automatically generates Nix expressions from `shard.yml` files.
+- Supports Crystal projects with various dependencies.
+- Building and managing Crystal applications.
+
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Installation
+
+### Prerequisites
+
+- [Nix](https://nixos.org/download.html) installed on your system.
+- [Crystal](https://crystal-lang.org/install/) programming language installed.
+>>>>>>> 0e63fe2 (init at 0.1.0)
 
 ## Installation
 
@@ -17,33 +41,14 @@ To generate a Nix expression for your Crystal project, simply run:
 
 ## Testing
 
-crystal2nix includes various test cases to ensure the reliability and functionality of the tool. These are categorized into offline unit tests and online integration tests.
+Unit Tests: These tests can be run within the Nix sandbox without requiring network connectivity.
 
-Unit Tests
-
-Offline Unit Tests: These tests can be run within the Nix sandbox without requiring network connectivity.
-
-
-`make check`
-
-Helps you only test offline test cases .
-
-`make test-all`
-These command helps use to test both the offline test cases and the integration test cases together.
-
-`make test-online`
-These command helps you to only test the integration test cases .
-
-
-## Development
-
-We welcome all contributions, whether it's bug fixes, new features, or documentation improvements. If you're interested in contributing to crystal2nix, here's how you can get started:
+`make check `     # Runs unit tests
 
 ## Future plans 
 
 Support for Fossil resources: Expanding source control compatibility.
 Additional integration test cases: Enhancing the robustness of our test suite.
-
 
 ## Contributing
 
@@ -61,7 +66,7 @@ crystal2nix is licensed under the MIT License. You are free to use, modify, and 
 
 ## Contributors
 
-
 - [Michael Fellinger](https://github.com/manveru)
 - [Peter Hoeg](https://github.com/peterhoeg)
 - [Vidhvath J](https://github.com/vidhvath28)
+
