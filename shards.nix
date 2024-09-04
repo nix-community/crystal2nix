@@ -1,8 +1,8 @@
 {
   spectator = {
     url = "https://gitlab.com/arctic-fox/spectator.git";
-    rev = "v0.10.5";
-    sha256 = "1fgjz5vg59h4m25v4fjklimcdn62ngqbchm00kw1160ggjpgpzw2";
+    rev = "v0.10.6";
+    sha256 = "0w6mv1q44is2m19pyspkyiwm84h55nchsm4pp82gdbb0j9ylhckx";
   };
   version_from_shard = {
     url = "https://github.com/hugopl/version_from_shard.git";

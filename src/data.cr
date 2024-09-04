@@ -1,5 +1,5 @@
 module Crystal2Nix
-  class PrefetchJSON
+  class GitPrefetchJSON
     include JSON::Serializable
 
     property sha256 : String
@@ -15,7 +15,8 @@ module Crystal2Nix
   class Shard
     include YAML::Serializable
 
-    property git : String
+    property git : String?
+    property hg : String?
     property version : String
   end
 end
