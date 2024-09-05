@@ -10,7 +10,7 @@ build: clean
 
 .PHONY: check
 check: $(BINARY)
-	@crystal spec
+	@crystal spec --tag ~online
 
 .PHONY: clean
 clean:
