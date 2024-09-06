@@ -46,7 +46,6 @@ module Crystal2Nix
                   Ensure that the git repository is accessible and try again."
                 next
               end
-
             when :hg
               args = [
                 repo.url,
@@ -65,7 +64,6 @@ module Crystal2Nix
                   Ensure that the Mercurial repository is accessible and try again."
                 next
               end
-
             else
               log_message "Unsupported repository type for '#{key}': #{repo.type}. Currently supported types are: git, hg."
               break
@@ -89,12 +87,12 @@ module Crystal2Nix
           @errors.each { |error| STDERR.puts "  - #{error}" }
           STDERR.puts "\nProcess not completed due to the above errors. Please review and resolve them before re-running."
           exit 1
-        else
-          File.copy(temp_file_path, SHARDS_NIX)
-          File.delete(temp_file_path)
-          puts "Processing completed successfully."
         end
       end
+
+      File.copy(temp_file_path, SHARDS_NIX)
+      File.delete(temp_file_path)
+      puts "Processing completed successfully."
     end
   end
 end
