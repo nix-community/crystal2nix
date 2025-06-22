@@ -25,7 +25,7 @@ module Crystal2Nix
             sha256 = PrefetchJSON.from_json(x.output).sha256
           end
 
-          file.puts %(  #{key} = {)
+          file.puts %(  "#{key}" = {)
           file.puts %(    url = "#{repo.url}";)
           file.puts %(    rev = "#{repo.rev}";)
           file.puts %(    sha256 = "#{sha256}";)
