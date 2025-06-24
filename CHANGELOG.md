@@ -1,6 +1,11 @@
 ### v0.4.0 
 (IN PROGRESS)
 
+### v0.3.1 2025-06-24
+
+Minor change(s):
+- Quote attribute names in shards.nix to allow dots in shard names.
+
 ### v0.3.0 2022-04-09
 
 Major change(s):
