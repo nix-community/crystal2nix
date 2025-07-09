@@ -1,11 +1,12 @@
 ---
 name: crystal2nix
-version: 0.3.0
+version: 0.3.1
 license: MIT
 repository: https://github.com/nix-community/crystal2nix
 authors:
   - Michael Fellinger
   - Peter Hoeg <peter@hoeg.com>
+  - Voob of Doom
 
 crystal: 1.0.0
 
