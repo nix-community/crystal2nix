@@ -1,12 +1,16 @@
-BINARY=bin/crystal2nix
+BINARY = bin/crystal2nix
 
 default: build
 
 $(BINARY): build
 
 .PHONY: build
-build: clean
+build: version.json
 	@shards build
+
+.PHONY: nix
+nix: build
+	@nix build .#crystal2nix
 
 .PHONY: check
 check: $(BINARY)
@@ -19,3 +23,12 @@ clean:
 .PHONY: run
 run: $(BINARY)
 	$(BINARY)
+
+version.json: shard.yml
+	@echo "{ \"version\": \"$$(shards version)\" }" > $@
+
+shard.lock: shard.yml
+	@shards install
+
+shards.nix: shard.lock
+	@$(BINARY)

@@ -12,6 +12,10 @@ module Crystal2Nix
           puts parser
           exit
         end
+        parser.on("-V", "--version", "Show version") do
+          puts "crystal2nix v#{Utils::VERSION}"
+          exit
+        end
         parser.invalid_option do |flag|
           STDERR.puts "ERROR: #{flag} is not a valid option."
           STDERR.puts parser
